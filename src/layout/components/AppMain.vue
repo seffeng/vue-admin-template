@@ -1,5 +1,6 @@
 <template>
   <section class="app-main">
+    <breadcrumb class="breadcrumb-container" />
     <transition name="fade-transform" mode="out-in">
       <router-view :key="key" />
     </transition>
@@ -7,8 +8,12 @@
 </template>
 
 <script>
+import Breadcrumb from '@/components/Breadcrumb'
 export default {
   name: 'AppMain',
+  components: {
+    Breadcrumb
+  },
   computed: {
     key() {
       return this.$route.path
@@ -26,8 +31,13 @@ export default {
   overflow: hidden;
 }
 .fixed-header+.app-main {
-  padding-top: 50px;
+  padding-top: 80px;
 }
+
+.breadcrumb-container {
+  float: left;
+}
+
 </style>
 
 <style lang="scss">

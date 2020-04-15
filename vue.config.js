@@ -31,12 +31,17 @@ module.exports = {
   productionSourceMap: false,
   devServer: {
     port: port,
-    open: true,
+    open: false,
     overlay: {
       warnings: false,
       errors: true
     },
-    before: require('./mock/mock-server.js')
+    proxy: {
+      '/dev-api': {
+        target: 'http://t2.github.cc',
+        pathRewrite: { '^/dev-api': '' }
+      }
+    }
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
