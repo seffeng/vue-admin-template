@@ -2,46 +2,22 @@
   <div class="navbar">
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
-    <div class="left-menu">
-      <el-menu mode="horizontal" menu-trigger="click">
-        <el-menu-item index="4">
-          <router-link to="/">首页</router-link>
-        </el-menu-item>
-        <el-menu-item index="3" disabled>
-          <router-link to="/example/tree">表格</router-link>
-        </el-menu-item>
-        <el-menu-item index="1">
-          <router-link to="/form/index">表单</router-link>
-        </el-menu-item>
-        <el-submenu index="2">
-          <template slot="title">嵌套菜单</template>
-          <el-submenu index="2-1">
-            <template slot="title">选项1</template>
-            <el-menu-item index="2-1-1">
-              <router-link to="/nested/menu1/menu1-1">选项1-1</router-link>
-            </el-menu-item>
-            <el-menu-item index="2-1-3">
-              <router-link to="/nested/menu1/menu1-3">选项1-3</router-link>
-            </el-menu-item>
-          </el-submenu>
-          <el-menu-item index="2-2">
-            <router-link to="/nested/menu2">选项2</router-link>
-          </el-menu-item>
-        </el-submenu>
-      </el-menu>
-    </div>
+    <breadcrumb class="breadcrumb-container" />
 
     <div class="right-menu">
+      <div class="right-menu-item">
+        <span>{{ name }}</span>
+      </div>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img v-if="avatar !== undefined && avatar !==''" :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar">
-          <img v-else src="@/assets/images/default-user.gif" class="user-avatar">
+          <img v-if="avatar" :src="avatar + '?imageView2/1/w/80/h/80'" class="user-avatar" :title="name">
+          <img v-else src="@/assets/images/default-user.gif" class="user-avatar" :title="name">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
             <el-dropdown-item>
-              Home
+              首页
             </el-dropdown-item>
           </router-link>
           <a target="_blank" href="https://github.com/PanJiaChen/vue-admin-template/">
@@ -51,7 +27,7 @@
             <el-dropdown-item>Docs</el-dropdown-item>
           </a>
           <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
+            <span style="display:block;">退出</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -61,16 +37,19 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
 export default {
   components: {
+    Breadcrumb,
     Hamburger
   },
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'name'
     ])
   },
   methods: {
@@ -106,14 +85,8 @@ export default {
     }
   }
 
-  .left-menu {
+  .breadcrumb-container {
     float: left;
-    height: 100%;
-    line-height: 50px;
-
-    &:focus {
-      outline: none;
-    }
   }
 
   .right-menu {

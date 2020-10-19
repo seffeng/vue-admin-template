@@ -1,20 +1,20 @@
 <template>
   <section class="app-main">
-    <breadcrumb class="breadcrumb-container" />
     <transition name="fade-transform" mode="out-in">
-      <router-view :key="key" />
+      <keep-alive :include="cachedViews">
+        <router-view :key="key" />
+      </keep-alive>
     </transition>
   </section>
 </template>
 
 <script>
-import Breadcrumb from '@/components/Breadcrumb'
 export default {
   name: 'AppMain',
-  components: {
-    Breadcrumb
-  },
   computed: {
+    cachedViews() {
+      return this.$store.state.tagsView.cachedViews
+    },
     key() {
       return this.$route.path
     }
@@ -31,13 +31,8 @@ export default {
   overflow: hidden;
 }
 .fixed-header+.app-main {
-  padding-top: 80px;
+  padding-top: 50px;
 }
-
-.breadcrumb-container {
-  float: left;
-}
-
 </style>
 
 <style lang="scss">

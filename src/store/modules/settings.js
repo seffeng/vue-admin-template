@@ -1,16 +1,18 @@
 import defaultSettings from '@/settings'
 
-const { fixedHeader, sidebarLogo, tagsView } = defaultSettings
+const { showSettings, fixedHeader, tagsView, sidebarLogo } = defaultSettings
 
 const state = {
+  tagsView: tagsView,
+  showSettings: showSettings,
   fixedHeader: fixedHeader,
-  sidebarLogo: sidebarLogo,
-  tagsView: tagsView
+  sidebarLogo: sidebarLogo
 }
 
 const mutations = {
   CHANGE_SETTING: (state, { key, value }) => {
-    if (Object.prototype.hasOwnProperty.call(state, state)) {
+    // eslint-disable-next-line no-prototype-builtins
+    if (state.hasOwnProperty(key)) {
       state[key] = value
     }
   }

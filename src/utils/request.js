@@ -1,11 +1,12 @@
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
+import { MessageBox, Message } from 'element-ui'
 import { getToken } from '@/utils/auth'
+import { debug } from '@/utils'
+import { isEmpty } from '@/utils/validate'
 
-// create an axios instance
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
+  baseURL: process.env.VUE_APP_BASE_API,
   // withCredentials: true, // send cookies when cross-domain requests
   timeout: 5000 // request timeout
 })
@@ -19,13 +20,13 @@ service.interceptors.request.use(
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers['X-Token'] = getToken()
+      config.headers['Authorization'] = 'Bearer ' + getToken()
     }
     return config
   },
   error => {
     // do something with request error
-    console.log(error) // for debug
+    debug(error) // for debug
     return Promise.reject(error)
   }
 )
@@ -45,7 +46,7 @@ service.interceptors.response.use(
   response => {
     const res = response.data
 
-    // if the custom code is not success, it is judged as an error.
+    // 此处代码可能需要修改！根据接口结果结构修改！
     if (res.status !== 'success') {
       // 401: 未登录;
       if (res.code === 401) {
@@ -61,7 +62,7 @@ service.interceptors.response.use(
         })
       } else {
         Message({
-          message: res.message,
+          message: isEmpty(res.message) ? '操作错误！' : res.message,
           type: 'error',
           duration: 5 * 1000
         })
@@ -78,6 +79,7 @@ service.interceptors.response.use(
     } else if (error.response.status === 419) {
       message = '数据验证错误！'
     }
+
     Message({
       message: message,
       type: 'error',

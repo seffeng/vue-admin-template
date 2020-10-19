@@ -1,18 +1,18 @@
 module.exports = {
 
-  title: 'Vue Admin Template',
+  title: process.env.VUE_APP_WEB_TITLE || 'Vue Web Demo',
+
+  /**
+   * @type {boolean} true | false
+   * @description Whether show the tagsView
+   */
+  tagsView: true,
 
   /**
    * @type {boolean} true | false
    * @description Whether fix the header
    */
-  fixedHeader: true,
-
-  /**
-   * @type {boolean} true | false
-   * @description Whether need tagsView
-   */
-  tagsView: true,
+  fixedHeader: false,
 
   /**
    * @type {boolean} true | false
